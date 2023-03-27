@@ -9,7 +9,8 @@ export default function Home() {
     const addresses: contractAddressesInterface = contractAddresses
     const supportedChains = Object.keys(addresses) as string[]
     const { isWeb3Enabled, chainId } = useMoralis()
-    const isChainedSupported = chainId != null && supportedChains.includes(parseInt(chainId).toString())
+    const isChainedSupported =
+        chainId != null && supportedChains.includes(parseInt(chainId).toString())
 
     return (
         <>
@@ -33,7 +34,6 @@ export default function Home() {
             ) : (
                 <div>Please connect to a Wallet</div>
             )}
-            <main className={styles.main}>Hello</main>
         </>
     )
 }
