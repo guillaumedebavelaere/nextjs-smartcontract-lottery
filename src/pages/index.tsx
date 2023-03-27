@@ -1,15 +1,12 @@
 import Head from "next/head"
-import Image from "next/image"
-import { Inter } from "next/font/google"
 import styles from "@/styles/Home.module.css"
 import Header from "@/components/Header"
 import LotteryEntrance from "@/components/LotteryEntrance"
 import { useMoralis } from "react-moralis"
-import { contractAddresses } from "../../constants"
-const inter = Inter({ subsets: ["latin"] })
+import contractAddressesInterface, { contractAddresses } from "../../constants"
 
 export default function Home() {
-    const addresses: Record<string, string> = contractAddresses
+    const addresses: contractAddressesInterface = contractAddresses
     const supportedChains = Object.keys(addresses) as string[]
     const { isWeb3Enabled, chainId } = useMoralis()
     const isChainedSupported = chainId != null && supportedChains.includes(parseInt(chainId).toString())

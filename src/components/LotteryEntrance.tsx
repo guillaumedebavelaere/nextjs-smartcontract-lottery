@@ -1,13 +1,9 @@
 import { useWeb3Contract } from "react-moralis"
-import { abi, contractAddresses } from "../../constants"
+import contractAddressesInterface, { abi, contractAddresses } from "../../constants"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
 import { BigNumber, ethers, ContractTransaction, ContractInterface } from "ethers"
 import { Bell, useNotification } from "web3uikit"
-
-interface contractAddressesInterface {
-    [key: string]: string[]
-}
 
 export default function LotteryEntrance() {
     const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
@@ -21,7 +17,11 @@ export default function LotteryEntrance() {
 
     const dispatch = useNotification()
 
-    const { runContractFunction: enterLottery } = useWeb3Contract({
+    const {
+        runContractFunction: enterLottery,
+        isLoading,
+        isFetching,
+    } = useWeb3Contract({
         abi,
         contractAddress: lotteryAddress as string,
         functionName: "enterLottery",
@@ -63,7 +63,6 @@ export default function LotteryEntrance() {
 
     const addWinnerPickedListener = async () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
-        // await provider.send('eth_requestAccounts', [])
         const signer = provider.getSigner()
         const contract = new ethers.Contract(
             lotteryAddress as string,
@@ -101,23 +100,29 @@ export default function LotteryEntrance() {
     }
 
     return (
-        <div>
+        <div className="p-5">
             Hi from lottery entrance!
             {lotteryAddress ? (
-                <div>
+                <div className="">
                     <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto"
                         onClick={async function () {
                             await enterLottery({
                                 onSuccess: (tx) => handleSuccess(tx as ContractTransaction),
                                 onError: (error) => console.log(error),
                             })
                         }}
+                        disabled={isLoading || isFetching}
                     >
-                        Enter lottery
+                        {isLoading || isFetching ? (
+                            <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div>
+                        ) : (
+                            <div>Enter lottery</div>
+                        )}
                     </button>
-                    Entrance fee <div>{ethers.utils.formatEther(entranceFee)} ETH</div>
-                    Number Of Players: <div>{numberOfPlayers}</div>
-                    Recent Winner: <div>{recentWinner}</div>
+                    <div>Entrance fee {ethers.utils.formatEther(entranceFee)} </div>
+                    <div>ETH Number Of Players:{numberOfPlayers}</div>
+                    <div>Recent Winner: {recentWinner}</div>
                 </div>
             ) : (
                 <div>No Lottery address detected</div>
