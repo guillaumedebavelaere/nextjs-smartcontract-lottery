@@ -8,7 +8,8 @@
 <h3 align="center">NextJS Smartcontract Lottery</h3>
 
   <p align="center">
-    Front end for hardhat-smartcontract-lottery
+    Front end for hardhat-smartcontract-lottery.
+    Deployed on IPFS with Fleek: https://billowing-sun-8857.on.fleek.co/
     <br />
     <a href="https://github.com/guillaumedebavelaere/nextjs-smartcontract-lottery"><strong>Explore the docs »</strong></a>
     <br />
